@@ -213,9 +213,9 @@ class AxiVersion(pr.Device):
         def parseBuildStamp(var, value, disp):
             p = parse.parse("{ImageName}: {BuildEnv}, {BuildServer}, Built {BuildDate} by {Builder}", value.strip())
             if p is not None:
-                for k,v in p.named.items():
-                    self.node(k).set(v,write=False)
-                self.writeAndVerifyBlocks(recurse=False)
+                with self.root.updateGroup():
+                    for k,v in p.named.items():
+                        self.node(k).set(v)
         
         self.add(pr.LocalVariable(
             name = 'ImageName',
